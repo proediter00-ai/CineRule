@@ -60,9 +60,7 @@ class HomeScrollAdapter(
             is HomeScrollViewBinding -> {
                 binding.homeScrollPreview.loadImage(posterUrl)
                 binding.homeScrollPreviewTags.apply {
-                    text = item.tags?.joinToString(" • ") ?: ""
-                    isGone = item.tags.isNullOrEmpty()
-                    maxLines = 2
+                    isGone = true
                 }
                 binding.homeScrollPreviewTitle.text = item.name.html()
 

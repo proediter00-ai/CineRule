@@ -1794,6 +1794,15 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
                 val homeViewModel =
                     ViewModelProvider(this@MainActivity)[HomeViewModel::class.java]
 
+                // CineRule: FAB source circle button click -> open source selector
+                findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fab_source)?.setOnClickListener {
+                    with(com.lagradost.cloudstream3.ui.home.HomeFragment.Companion) {
+                        this@MainActivity.selectHomepage(homeViewModel.apiName.value) { api ->
+                            homeViewModel.loadAndCancel(api, forceReload = true, fromUI = true)
+                        }
+                    }
+                }
+
                 observe(homeViewModel.apiName) { apiName ->
                     if (apiName != null) {
                         val iconRes = when {
@@ -1801,14 +1810,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
                             apiName.contains("Prime", ignoreCase = true) -> R.drawable.ic_prime
                             else -> R.drawable.ic_baseline_extension_24
                         }
-                        binding?.navView?.menu?.findItem(R.id.navigation_source)?.let { item ->
-                            item.title = apiName
-                            item.setIcon(iconRes)
-                        }
-                        binding?.navRailView?.menu?.findItem(R.id.navigation_source)?.let { item ->
-                            item.title = apiName
-                            item.setIcon(iconRes)
-                        }
+                        // Update the FAB circle icon
+                        findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fab_source)?.setImageResource(iconRes)
                     }
                 }
 

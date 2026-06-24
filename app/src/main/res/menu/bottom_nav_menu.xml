@@ -5,10 +5,14 @@
             android:icon="@drawable/home_icon_selector"
             android:title="@string/title_home" />
         <item
+            android:id="@+id/navigation_search"
+            android:icon="@drawable/search_icon"
+            android:title="@string/title_search" />
+        <item
             android:id="@+id/navigation_source"
-            android:icon="@drawable/ic_baseline_extension_24"
-            android:title="Source" />
-
+            android:icon="@android:color/transparent"
+            android:title=""
+            android:enabled="false" />
         <item
             android:id="@+id/navigation_library"
             android:icon="@drawable/library_icon_selector"
@@ -17,4 +21,4 @@
             android:id="@+id/navigation_downloads"
             android:icon="@drawable/netflix_download"
             android:title="@string/title_downloads" />
-</menu>
+</menu>

@@ -49,6 +49,23 @@
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_source"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_baseline_extension_24"
+            android:contentDescription="Source"
+            android:scaleType="centerCrop"
+            app:backgroundTint="@android:color/white"
+            app:fabSize="normal"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:elevation="8dp"
+            app:tint="@null" />
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
