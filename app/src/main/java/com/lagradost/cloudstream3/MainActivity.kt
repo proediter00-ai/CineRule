@@ -1796,8 +1796,19 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
 
                 observe(homeViewModel.apiName) { apiName ->
                     if (apiName != null) {
-                        navView.menu.findItem(R.id.navigation_source)?.title = apiName
-                        navRailView.menu.findItem(R.id.navigation_source)?.title = apiName
+                        val iconRes = when {
+                            apiName.contains("Netflix", ignoreCase = true) -> R.drawable.ic_netflix
+                            apiName.contains("Prime", ignoreCase = true) -> R.drawable.ic_prime
+                            else -> R.drawable.ic_baseline_extension_24
+                        }
+                        navView.menu.findItem(R.id.navigation_source)?.apply {
+                            title = apiName
+                            setIcon(iconRes)
+                        }
+                        navRailView.menu.findItem(R.id.navigation_source)?.apply {
+                            title = apiName
+                            setIcon(iconRes)
+                        }
                     }
                 }
 
