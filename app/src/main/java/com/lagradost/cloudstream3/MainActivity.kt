@@ -1801,13 +1801,13 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
                             apiName.contains("Prime", ignoreCase = true) -> R.drawable.ic_prime
                             else -> R.drawable.ic_baseline_extension_24
                         }
-                        navView.menu.findItem(R.id.navigation_source)?.apply {
-                            title = apiName
-                            setIcon(iconRes)
+                        binding?.navView?.menu?.findItem(R.id.navigation_source)?.let { item ->
+                            item.title = apiName
+                            item.setIcon(iconRes)
                         }
-                        navRailView.menu.findItem(R.id.navigation_source)?.apply {
-                            title = apiName
-                            setIcon(iconRes)
+                        binding?.navRailView?.menu?.findItem(R.id.navigation_source)?.let { item ->
+                            item.title = apiName
+                            item.setIcon(iconRes)
                         }
                     }
                 }
