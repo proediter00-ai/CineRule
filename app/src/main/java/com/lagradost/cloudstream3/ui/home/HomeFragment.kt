@@ -672,6 +672,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 // CineRule: Navigate to the global search page
                 activity?.navigate(R.id.navigation_search)
             }
+            homeNotificationsButton.setOnClickListener { _ ->
+                activity?.navigate(R.id.navigation_settings)
+            }
 
             homeMasterRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
