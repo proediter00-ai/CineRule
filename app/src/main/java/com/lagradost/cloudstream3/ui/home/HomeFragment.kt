@@ -369,8 +369,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         fun Context.selectHomepage(selectedApiName: String?, callback: (String) -> Unit) {
             val validAPIs = filterProviderByPreferredMedia().toMutableList()
 
-            validAPIs.add(0, randomApi)
-            validAPIs.add(0, noneApi)
+            // validAPIs.add(0, randomApi)
+            // validAPIs.add(0, noneApi)
             //val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             //builder.setView(R.layout.home_select_mainpage)
             val builder =
