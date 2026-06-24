@@ -669,8 +669,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             }
 
             homePreviewSearchButton.setOnClickListener { _ ->
-                // Open blank screen.
-                homeViewModel.queryTextSubmit("")
+                // CineRule: Navigate to the global search page
+                activity?.navigate(R.id.navigation_search)
             }
 
             homeMasterRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {

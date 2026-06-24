@@ -189,9 +189,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 
             searchViewModel.searchAndCancel(
                 query = query,
-                providersActive = notFilteredBySelectedTypes.filter { (_, types) ->
-                    types?.any { selectedSearchTypes.contains(it) } == true
-                }.ifEmpty { notFilteredBySelectedTypes }.map { it.first }.toSet()
+                providersActive = emptySet() // CineRule: Global search
             )
         }
     }
@@ -201,20 +199,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 
     private fun reloadRepos(success: Boolean = false) = main {
         searchViewModel.reloadRepos()
-        context?.filterProviderByPreferredMedia()?.let { validAPIs ->
-            bindChips(
-                binding?.tvtypesChipsScroll?.tvtypesChips,
-                selectedSearchTypes,
-                validAPIs.flatMap { api -> api.supportedTypes }.distinct()
-            ) { list ->
-                if (selectedSearchTypes.toSet() != list.toSet()) {
-                    DataStoreHelper.searchPreferenceTags = list
-                    selectedSearchTypes.clear()
-                    selectedSearchTypes.addAll(list)
-                    search(binding?.mainSearch?.query?.toString())
-                }
-            }
-        }
+        // CineRule: Removed category chips binding
     }
 
     override fun fixLayout(view: View) {
@@ -356,24 +341,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
                         arrayAdapter.notifyDataSetChanged()
                     }
 
-                    bindChips(
-                        selectMainpageBinding.tvtypesChipsScroll.tvtypesChips,
-                        selectedSearchTypes,
-                        validAPIs.flatMap { api -> api.supportedTypes }.distinct()
-                    ) { list ->
-                        updateList(list)
-
-                        // refresh selected chips in main chips
-                        if (selectedSearchTypes.toSet() != list.toSet()) {
-                            selectedSearchTypes.clear()
-                            selectedSearchTypes.addAll(list)
-                            updateChips(
-                                binding.tvtypesChipsScroll.tvtypesChips,
-                                selectedSearchTypes
-                            )
-
-                        }
-                    }
+                        updateList(selectedSearchTypes)
 
 
                     cancelBtt?.setOnClickListener {
@@ -560,11 +528,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
                 SEARCH_HISTORY_OPEN -> {
                     if (searchItem == null) return@SearchHistoryAdaptor
                     searchViewModel.clearSearch()
-                    if (searchItem.type.isNotEmpty())
-                        updateChips(
-                            binding.tvtypesChipsScroll.tvtypesChips,
-                            searchItem.type.toMutableList()
-                        )
                     binding.mainSearch.setQuery(searchItem.searchText, true)
                 }
 
@@ -683,14 +646,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
             // On non-phone layouts, redirect focus and handle back button
             if (!isLayout(PHONE)) {
                 if (hasSuggestions) {
-                    binding.tvtypesChipsScroll.tvtypesChips.root.nextFocusDownId = R.id.search_suggestions_recycler
+                    // binding.tvtypesChipsScroll.tvtypesChips.root.nextFocusDownId = R.id.search_suggestions_recycler
                     // Attach back button callback to clear suggestions
                     activity?.attachBackPressedCallback("SearchFragment") {
                         searchViewModel.clearSuggestions()
                     }
                 } else {
                     // Reset to default focus target (history)
-                    binding.tvtypesChipsScroll.tvtypesChips.root.nextFocusDownId = R.id.search_history_recycler
+                    // binding.tvtypesChipsScroll.tvtypesChips.root.nextFocusDownId = R.id.search_history_recycler
                     // Detach back button callback when no suggestions
                     activity?.detachBackPressedCallback("SearchFragment")
                 }

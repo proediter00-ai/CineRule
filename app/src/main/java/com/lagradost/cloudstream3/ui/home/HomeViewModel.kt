@@ -517,30 +517,32 @@ class HomeViewModel : ViewModel() {
             }
 
             val api = getApiFromNameNull(preferredApiName)
-            if (preferredApiName == noneApi.name) {
-                // just set to random
-                if (fromUI) DataStoreHelper.currentHomePage = noneApi.name
-                loadAndCancel(noneApi)
+            val validAPIs = context?.filterProviderByPreferredMedia()
+
+            if (preferredApiName == noneApi.name || preferredApiName == null || api == null) {
+                // CineRule: Never use noneApi by default, grab the first available API (like NetflixMirror)
+                if (PluginManager.loadedOnlinePlugins || PluginManager.isSafeMode()) {
+                    if (validAPIs.isNullOrEmpty()) {
+                        loadAndCancel(noneApi)
+                    } else {
+                        val firstApi = validAPIs.first()
+                        loadAndCancel(firstApi)
+                        if (fromUI) DataStoreHelper.currentHomePage = firstApi.name
+                    }
+                } else {
+                    _page.postValue(Resource.Loading())
+                    if (preferredApiName != null)
+                        _apiName.postValue(preferredApiName)
+                }
             } else if (preferredApiName == randomApi.name) {
                 // randomize the api, if none exist like if not loaded or not installed
                 // then use nothing
-                val validAPIs = context?.filterProviderByPreferredMedia()
                 if (validAPIs.isNullOrEmpty()) {
                     loadAndCancel(noneApi)
                 } else {
                     val apiRandom = validAPIs.random()
                     loadAndCancel(apiRandom)
                     if (fromUI) DataStoreHelper.currentHomePage = apiRandom.name
-                }
-            } else if (api == null) {
-                // API is not found aka not loaded or removed, post the loading
-                // progress if waiting for plugins, otherwise nothing
-                if (PluginManager.loadedOnlinePlugins || PluginManager.isSafeMode()) {
-                    loadAndCancel(noneApi)
-                } else {
-                    _page.postValue(Resource.Loading())
-                    if (preferredApiName != null)
-                        _apiName.postValue(preferredApiName)
                 }
             } else {
                 // if the api is found, then set it to it and save key

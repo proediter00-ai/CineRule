@@ -145,7 +145,7 @@
                 android:padding="10dp"
                 android:src="@drawable/search_icon"
                 android:tag="@string/tv_no_focus_tag"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:tint="@color/player_on_button_tv_attr" />
 
             <ImageView
