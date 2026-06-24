@@ -1710,6 +1710,9 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             .setPopUpTo(navController.graph.startDestination, false)
             .build()*/
 
+        val homeViewModel =
+            ViewModelProvider(this@MainActivity)[HomeViewModel::class.java]
+
         val rippleColor = ColorStateList.valueOf(getResourceColor(R.attr.colorPrimary, 0.1f))
 
         binding?.navView?.apply {
@@ -1717,6 +1720,14 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             itemActiveIndicatorColor = rippleColor
             setupWithNavController(navController)
             setOnItemSelectedListener { item ->
+                if (item.itemId == R.id.navigation_source) {
+                    with(com.lagradost.cloudstream3.ui.home.HomeFragment.Companion) {
+                        this@MainActivity.selectHomepage(homeViewModel.apiName.value) { api ->
+                            homeViewModel.loadAndCancel(api, forceReload = true, fromUI = true)
+                        }
+                    }
+                    return@setOnItemSelectedListener false
+                }
                 onNavDestinationSelected(
                     item,
                     navController
@@ -1745,6 +1756,14 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             }*/
 
             setOnItemSelectedListener { item ->
+                if (item.itemId == R.id.navigation_source) {
+                    with(com.lagradost.cloudstream3.ui.home.HomeFragment.Companion) {
+                        this@MainActivity.selectHomepage(homeViewModel.apiName.value) { api ->
+                            homeViewModel.loadAndCancel(api, forceReload = true, fromUI = true)
+                        }
+                    }
+                    return@setOnItemSelectedListener false
+                }
                 onNavDestinationSelected(
                     item,
                     navController
@@ -1774,6 +1793,13 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
 
                 val homeViewModel =
                     ViewModelProvider(this@MainActivity)[HomeViewModel::class.java]
+
+                observe(homeViewModel.apiName) { apiName ->
+                    if (apiName != null) {
+                        navView.menu.findItem(R.id.navigation_source)?.title = apiName
+                        navRailView.menu.findItem(R.id.navigation_source)?.title = apiName
+                    }
+                }
 
                 observe(homeViewModel.currentAccount) { currentAccount ->
                     if (currentAccount != null) {

@@ -15,6 +15,15 @@ abstract class BasePlugin {
      * @param element MainAPI provider you want to register
      */
     fun registerMainAPI(element: MainAPI) {
+        // CineRule: Prevent duplicate Netflix providers
+        if (element.name.contains("Netflix", ignoreCase = true)) {
+            val hasNetflix = APIHolder.allProviders.any { it.name.contains("Netflix", ignoreCase = true) }
+            if (hasNetflix) {
+                Log.i(PLUGIN_TAG, "Skipping duplicate Netflix provider: ${element.name}")
+                return
+            }
+        }
+
         Log.i(PLUGIN_TAG, "Adding ${element.name} (${element.mainUrl}) MainAPI")
         element.sourcePlugin = this.filename
         APIHolder.allProviders.add(element)

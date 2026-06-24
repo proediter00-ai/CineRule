@@ -656,7 +656,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             homeMasterRecycler.setRecycledViewPool(ParentItemAdapter.sharedPool)
             homeMasterRecycler.adapter = homeMasterAdapter
 
-            homeApiFab.isVisible = isLayout(PHONE)
+            homeApiFab.isVisible = false // Hidden because it moved to bottom navigation
 
             homePreviewReloadProvider.setOnClickListener {
                 homeViewModel.loadAndCancel(
@@ -736,7 +736,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             currentApiName = apiName
             binding.apply {
                 homeApiFab.text = apiName
-                homeChangeApi.text = apiName
+                homeChangeApi.isVisible = false // Hidden because it moved to bottom navigation
                 homePreviewReloadProvider.isGone = (apiName == noneApi.name)
                 homePreviewSearchButton.isGone = (apiName == noneApi.name)
             }

@@ -4,6 +4,10 @@
             android:id="@+id/navigation_home"
             android:icon="@drawable/home_icon_selector"
             android:title="@string/title_home" />
+        <item
+            android:id="@+id/navigation_source"
+            android:icon="@drawable/ic_baseline_extension_24"
+            android:title="Source" />
 
         <item
             android:id="@+id/navigation_library"
