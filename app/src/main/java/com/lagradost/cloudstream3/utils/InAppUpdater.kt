@@ -92,11 +92,12 @@ object InAppUpdater {
     }
 
     private suspend fun Activity.getReleaseUpdate(): Update {
-        val url = "https://api.github.com/repos/$GITHUB_USER_NAME/$GITHUB_REPO/releases"
-        val headers = mapOf("Accept" to "application/vnd.github.v3+json")
-        val response = parseJson<Array<GithubRelease>>(
-            app.get(url, headers = headers).text
-        ).toList()
+        // CineRule: Use a raw JSON file in the repo so we don't have to deal with GitHub Releases UI
+        val url = "https://raw.githubusercontent.com/$GITHUB_USER_NAME/$GITHUB_REPO/main/releases.json"
+        // No headers needed for raw content
+        val headers = mapOf<String, String>()
+        val responseText = app.get(url, headers = headers).text
+        val response = parseJson<Array<GithubRelease>>(responseText).toList()
 
         val versionRegex = Regex("""(.*?((\d+)\.(\d+)\.(\d+))\.apk)""")
         val versionRegexLocal = Regex("""(.*?((\d+)\.(\d+)\.(\d+)).*)""")
