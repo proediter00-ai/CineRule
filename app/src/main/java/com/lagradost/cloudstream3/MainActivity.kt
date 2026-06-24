@@ -2032,22 +2032,8 @@ class MainActivity : AppCompatActivity(), ColorPickerDialogListener, BiometricCa
             removeKey(USER_SELECTED_HOMEPAGE_API)
         }
 
-        try {
-            if (getKey(HAS_DONE_SETUP_KEY, false) != true) {
-                navController.navigate(R.id.navigation_setup_language)
-                // If no plugins bring up extensions screen
-            } else if (PluginManager.getPluginsOnline().isEmpty()
-                && PluginManager.getPluginsLocal().isEmpty()
-//                && PREBUILT_REPOSITORIES.isNotEmpty()
-            ) {
-                navController.navigate(
-                    R.id.navigation_setup_extensions,
-                    SetupFragmentExtensions.newInstance(false)
-                )
-            }
-        } catch (e: Exception) {
-            logError(e)
-        }
+        // CineRule: Bypass all onboarding setup screens and go straight to the app.
+        setKey(HAS_DONE_SETUP_KEY, true)
 
 //        Used to check current focus for TV
 //        main {
